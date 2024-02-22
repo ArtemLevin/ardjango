@@ -13,6 +13,8 @@ import os
 
 
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,20 +23,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = bool(os.environ.get('DEBUG'))
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR /'media'
+MEDIA_ROOT = BASE_DIR /'media/'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     '10.10.10.10',
-    'arlev.pythonanywhere.com',
+    'ardjango.pythonanywhere.com',
 ]
 
 INTERNAL_IPS = [
@@ -55,7 +57,6 @@ INSTALLED_APPS = [
     'myapp4',
     'myapp5',
     'myapp6',
-    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -96,11 +97,11 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'arlev$default',
-        "USER": "arlev",
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('MYSQL_DBNAME'),
+        "USER": os.getenv('MYSQL_USER'),
         "PASSWORD": os.getenv('MYSQL_PASSWORD'),
-        "HOST": "arlev.mysql.pythonanywhere-services.com",
+        "HOST": os.getenv('MYSQL_HOST'),
         "OPTIONS": {
             'init_command': "SET NAMES 'utf8mb4'; SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
